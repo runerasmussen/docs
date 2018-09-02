@@ -1,0 +1,64 @@
+---------------------------------------------------------------------------
+	POWERSHELL SNIPPETS!
+---------------------------------------------------------------------------
+
+
+#Backup App Folder with current timestamp
+
+Clear-Host
+Write-Host ">>> Backup App Folder with current timestamp"
+
+$appfolder = "C:\a\App"
+$backupfolder = "C:\a\Backup\Backup_{0:yyyyMMdd_hhmmss}\App" -f $(Get-Date)
+
+Copy-Item $appfolder $backupfolder -Recurse -Verbose
+
+
+
+#Installs service if it's not already installed
+
+Clear-Host
+$myservicename = 'MSSQL$SQL2016'
+$myservicepath = ""
+$myservicedescription = ""
+
+$myservice = Get-Service $myservicename -ErrorAction SilentlyContinue
+
+If ($myservice -eq $null)
+{
+    Write-Host "The Windows Service does not exist and need to be created"
+    New-Service -Name $myservicename -BinaryPathName $myservicepath -Description $myservicedescription -StartupType Automatic
+}
+else
+{
+    Write-Host "The Windows Service" $myservice.Name "already exists"
+
+    if ($myservice.Status -eq "Stopped")
+    {
+        Write-Host "Service is stopped!"
+    }
+}
+
+
+-------------------------------------------
+
+Get-Date -Format yyyy-MM-dd
+
+Get-HotFix -Verbose
+
+Get-Command -Name Get-Win* -CommandType Cmdlet >> pslog.txt; notepad pslog.txt
+
+$LASTEXITCODE
+
+Get-Help -Name Get-Process -ShowWindow
+
+Get-Member -InputObject (Get-Service -Name AgentService) -MemberType Event
+
+Get-Command -Name *service* -CommandType Cmdlet
+
+Get-Alias -Name d* | ForEach-Object { Write-Host $_.Name "is matching" $_.Definition } | 
+
+Get-Command Me* | Sort-Object DisplayName -Descending | Select-Object Name,CommandType
+
+Get-Command Me* | Out-GridView -Title "Gridview titel"
+$ref
