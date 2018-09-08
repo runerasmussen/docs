@@ -1,10 +1,10 @@
 /*******************************************************************************************
-	db_users.sql
+ db_users.sql
 
-	Retrieves Users per database and their associated permission roles
-	Access required: Reader per DB
-	Author: Rune Rasmussen (www.runerasmussen.dk)
-	https://github.com/runerasmussen/docs/blob/master/code_snippets/sql/db_users.sql
+ Retrieves Users per database and their associated permission roles
+ Access required: Reader per DB
+ Author: Rune Rasmussen (www.runerasmussen.dk)
+ https://github.com/runerasmussen/docs/blob/master/code_snippets/sql/db_users.sql
 ********************************************************************************************/
 
 DECLARE @DB_USers TABLE
@@ -25,19 +25,19 @@ WHERE prin.sid IS NOT NULL and prin.sid NOT IN (0x00) and
 prin.is_fixed_role <> 1 AND prin.name NOT LIKE ''##%'''
 
 SELECT
-	DBName, UserName, LoginType,
-	STUFF((
-		SELECT ',' + CONVERT(VARCHAR(500),associatedrole)
-		FROM @DB_USers user2
-		WHERE user1.DBName=user2.DBName AND user1.UserName=user2.UserName
-		FOR XML PATH('')
-	),1,1,'') AS [PermissionRoles],
-	CreateDate, ModifyDate
+  DBName, UserName, LoginType,
+  STUFF((
+    SELECT ',' + CONVERT(VARCHAR(500),associatedrole)
+    FROM @DB_USers user2
+    WHERE user1.DBName=user2.DBName AND user1.UserName=user2.UserName
+    FOR XML PATH('')
+  ),1,1,'') AS [PermissionRoles],
+  CreateDate, ModifyDate
 FROM
-	@DB_USers user1
+  @DB_USers user1
 --WHERE
---	dbname IN ('ATS')	/* Filter by DB name */
+--  dbname IN ('ATS')	/* Filter by DB name */
 GROUP BY
-	dbname, username, logintype, CreateDate, ModifyDate
+  dbname, username, logintype, CreateDate, ModifyDate
 ORDER BY
-	DBName, username
+  DBName, username
