@@ -1,3 +1,13 @@
+/*******************************************************************************************
+	table_counts.sql
+
+	Retrieves row counts and storage space used per SQL table
+	Access required: Reader (dbo rights not required!)
+	Usage: Modify SELECT, WHERE and ORDER BY sections to filter as required.
+	Author: Rune Rasmussen (www.runerasmussen.dk)
+	https://github.com/runerasmussen/docs/blob/master/code_snippets/sql/table_counts.sql
+********************************************************************************************/
+
 SELECT 
     s.Name AS SchemaName,
     t.NAME AS TableName,
@@ -16,14 +26,12 @@ INNER JOIN
 LEFT OUTER JOIN 
     sys.schemas s ON t.schema_id = s.schema_id
 WHERE 
-    t.NAME NOT LIKE 'dt%' 
-    AND t.is_ms_shipped = 0
-    AND i.OBJECT_ID > 255 
-	--AND t.name IN ('myTable')
-	AND s.Name IN ('dbo')
-	--AND p.rows = 0
+    t.type = 'U' AND t.is_ms_shipped = 0x0
+	--AND t.name IN ('myTable')  /* Filter by Table names */
+	--AND s.Name IN ('dbo')		 /* Filter by Schema names */
+	--AND p.rows = 0			 /* Filter by Row counts in per Table */
 GROUP BY 
     s.Name, t.Name, p.Rows
 ORDER BY
 	1,2
-    --p.rows DESC
+    --,p.rows DESC				/* Order by Table Row counts */
