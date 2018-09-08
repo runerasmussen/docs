@@ -36,8 +36,9 @@ SELECT
 FROM
   @DB_USers user1
 --WHERE
---  dbname IN ('ATS')	/* Filter by DB name */
+--  DBName IN ('mydb')	                              /* Filter by DB name  */
+--  UserName IN ('domain\myusername','mysqlusername') /* Filter by UserName */
 GROUP BY
-  dbname, username, logintype, CreateDate, ModifyDate
+  DBName, UserName, LoginType, CreateDate, ModifyDate
 ORDER BY
-  DBName, username
+  DBName, UserName
