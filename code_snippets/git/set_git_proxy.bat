@@ -1,2 +1,2 @@
-git config --global http.proxy http://MyAccount:MyPassword@proxy.ey.net:8080
-git config --global https.proxy http://MyAccount:MyPassword@proxy.ey.net:8443
+git config --global http.proxy http://MyAccount:MyPassword@proxy.runerasmussen.dk:8080
+git config --global https.proxy http://MyAccount:MyPassword@proxy.runerasmussen.dk:8443
