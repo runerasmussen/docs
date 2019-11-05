@@ -14,7 +14,8 @@ CREATE TABLE ##temp
     FilePath nvarchar(500),
     FileSizeMb decimal (18,2),
     FreeSpaceMb decimal (18,2)
-)   
+)
+ 
 EXEC sp_msforeachdb '
 Use [?];
 Insert Into ##temp (DatabaseName, LogicalName, FilePath, FileSizeMb, FreeSpaceMb)
@@ -24,5 +25,10 @@ Insert Into ##temp (DatabaseName, LogicalName, FilePath, FileSizeMb, FreeSpaceMb
         Cast(FILEPROPERTY(name, ''SpaceUsed'') * 8.0/1024.0 as decimal(18,2)) as nvarchar) As FreeSpace
     From sys.database_files
 '
-SELECT * FROM ##temp ORDER BY 3
+
+SELECT *
+FROM ##temp
+--WHERE DatabaseName LIKE 'DPA_%'	
+ORDER BY 3
+
 DROP TABLE ##temp
